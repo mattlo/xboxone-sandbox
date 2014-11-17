@@ -1,4 +1,5 @@
 body {
     font-family: monospace;
     font-size: 60px;
+    word-wrap: break-word;
 }

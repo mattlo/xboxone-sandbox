@@ -5,10 +5,15 @@
 		<link rel="stylesheet" href="button-test.css" />
 	</head>
 	<body>
-		Output:
-		{{ details }}
+		<div game-button-listener="A_BUTTON">
+			[A]: {{ button }}
+		</div>
+		<div game-button-listener="B_BUTTON">
+			[B]: {{ button }}
+		</div>
 
 		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0/angular.js"></script>
+		<script src="../common/common.js"></script>
 		<script src="button-test.js"></script>
 	</body>
 </html>
