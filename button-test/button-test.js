@@ -1,3 +1,7 @@
+app.run(function ($gamepad, $rootScope) {
+	$rootScope.buttons = $gamepad.action;
+});
+
 app.directive('gameButtonListener', function ($rootScope, $gamepad) {
 	return {
 		scope: true,

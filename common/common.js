@@ -24,12 +24,16 @@ app.factory('$gamepad', function ($window, $rootScope) {
 			Y_BUTTON: 3,
 			LEFT_SHOULDER: 4,
 			RIGHT_SHOULDER: 5,
+			LEFT_TRIGGER: 6,
+			RIGHT_TRIGGER: 7,
+			VIEW_BUTTON: 8,
+			MENU_BUTTON: 9,
+			LEFT_THUMBSTICK_BUTTON: 10,
+			RIGHT_THUMBSTICK_BUTTON: 11,
 			UP_DPAD: 12,
 			DOWN_DPAD: 13,
 			LEFT_DPAD: 14,
-			RIGHT_DPAD: 15,
-			VIEW_BUTTON: 8,
-			MENU_BUTTON: 9
+			RIGHT_DPAD: 15
 		},
 		thumbstickAction: {
 			LEFT_THUMBSTICK_X: 0,
