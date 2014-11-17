@@ -8,7 +8,12 @@ window.onerror = console.log = function () {
 app.factory('$gamepad', function ($window, $rootScope) {
 
 	var $gamepad,
-		$scope = $rootScope.$new();
+		$scope = $rootScope.$new(),
+		thumbstickSensitivity = 0.2,
+		actionRecord = {
+			LEFT_THUMBSTICK: false,
+			RIGHT_THUMBSTICK: false
+		};
 
 	$gamepad = {
 		// button constants
@@ -26,6 +31,12 @@ app.factory('$gamepad', function ($window, $rootScope) {
 			VIEW_BUTTON: 8,
 			MENU_BUTTON: 9
 		},
+		thumbstickAction: {
+			LEFT_THUMBSTICK_X: 0,
+			LEFT_THUMBSTICK_Y: 1,
+			RIGHT_THUMBSTICK_X: 2,
+			RIGHT_THUMBSTICK_Y: 3
+		},
 		instance: function () {
 			return $window.navigator.getGamepads()[0]
 		},
@@ -37,8 +48,25 @@ app.factory('$gamepad', function ($window, $rootScope) {
 		}
 	};
 
+	function actionRecordSwitch(key, currentlyAt) {
+		if (currentlyAt !== actionRecord[key]) {
+			actionRecord[key] = currentlyAt;
+
+			$scope.$broadcast('thumbstick.' + key + '.state', currentlyAt);
+		}
+	}
+
+	function hasJoystickMoved(gamepadRef, x, y) {
+		function distance(n) {
+			return Math.abs(gamepadRef.axes[n]) > thumbstickSensitivity
+		}
+
+		return distance(x) || distance(y);
+	}
+
 	function eventLoop() {
 		var button,
+			joystick,
 			gamepadRef = $gamepad.instance();
 
 		if (typeof gamepadRef !== 'undefined') {
@@ -53,6 +81,30 @@ app.factory('$gamepad', function ($window, $rootScope) {
 					);
 				}
 			}
+
+			var debug = document.querySelector('#debug');
+			debug.innerHTML = '';
+
+			// listen for joystick deltas
+			(function (g) {
+				[
+					[g.LEFT_THUMBSTICK_X, g.LEFT_THUMBSTICK_Y, 'LEFT_THUMBSTICK'],
+					[g.RIGHT_THUMBSTICK_X, g.RIGHT_THUMBSTICK_Y, 'RIGHT_THUMBSTICK']
+				].forEach(function(s) {
+					if (hasJoystickMoved(gamepadRef, s[0], s[1])) {
+						// dispatch joystick event
+						$scope.$broadcast(
+							'thumbstick.' + s[2] + '.move',
+							gamepadRef.axes[s[0]],
+							gamepadRef.axes[s[1]]
+						)
+
+						actionRecordSwitch(s[2], true);
+					} else {
+						actionRecordSwitch(s[2], false);
+					}
+				});
+			}($gamepad.thumbstickAction));
 		}
 
 		// run forever!
