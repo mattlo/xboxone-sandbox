@@ -48,11 +48,11 @@ app.factory('$gamepad', function ($window, $rootScope) {
 		}
 	};
 
-	function actionRecordSwitch(key, currentlyAt) {
-		if (currentlyAt !== actionRecord[key]) {
+	function actionRecordSwitch(namespace, key, currentlyAt) {
+		if (typeof actionRecord[key] === 'undefined' || currentlyAt !== actionRecord[key]) {
 			actionRecord[key] = currentlyAt;
 
-			$scope.$broadcast('thumbstick.' + key + '.state', currentlyAt);
+			$scope.$broadcast(namespace + '.' + key + '.state', currentlyAt);
 		}
 	}
 
@@ -79,6 +79,10 @@ app.factory('$gamepad', function ($window, $rootScope) {
 						gamepadRef.buttons[$gamepad.action[button]].value, 
 						$gamepad.action[button]
 					);
+
+					actionRecordSwitch('button', button, true);
+				} else {
+					actionRecordSwitch('button', button, false);
 				}
 			}
 
@@ -99,9 +103,9 @@ app.factory('$gamepad', function ($window, $rootScope) {
 							gamepadRef.axes[s[1]]
 						)
 
-						actionRecordSwitch(s[2], true);
+						actionRecordSwitch('thumbstick', s[2], true);
 					} else {
-						actionRecordSwitch(s[2], false);
+						actionRecordSwitch('thumbstick', s[2], false);
 					}
 				});
 			}($gamepad.thumbstickAction));
