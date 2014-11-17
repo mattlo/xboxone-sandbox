@@ -34,11 +34,11 @@ app.factory('$gamepad', function ($window, $rootScope) {
 			VIEW_BUTTON: 8,
 			MENU_BUTTON: 9
 		},
-	    instance: function () {
-	    	return $window.navigator.getGamepads()[0]
-	    },
+		instance: function () {
+			return $window.navigator.getGamepads()[0]
+		},
 		on: function (event, callback) {
-			var ins = $scope.$on.call($scope, event, function (arguments) {
+			return $scope.$on.call($scope, event, function (arguments) {
 				callback.apply(this, arguments);
 				$rootScope.$apply();
 			});
@@ -58,7 +58,7 @@ app.factory('$gamepad', function ($window, $rootScope) {
 						'button.' + button + '.down', 
 						gamepadRef.buttons[button], 
 						$gamepad.action[button]
-					);
+						);
 				}
 			}
 		}
