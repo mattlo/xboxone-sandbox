@@ -1,2 +1,2 @@
 # Xbox One Sandbox
-A collection of proof-of-concepts for the Xbox One
+A collection of proof-of-concepts using AngularJS for Internet Explorer on the Xbox One. 
