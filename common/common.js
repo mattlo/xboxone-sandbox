@@ -90,9 +90,6 @@ app.factory('$gamepad', function ($window, $rootScope) {
 				}
 			}
 
-			var debug = document.querySelector('#debug');
-			debug.innerHTML = '';
-
 			// listen for joystick deltas
 			(function (g) {
 				[
